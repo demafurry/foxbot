@@ -1,5 +1,1 @@
-"# foxbot" 
-"# foxbot" 
-"# foxbot" 
-"# foxbot" 
-"# foxbot" 
+[Сообщество VK](https://vk.com/foxbot_discord)
