@@ -53,22 +53,15 @@ async def on_ready():
 
 @bot.event
 async def on_command_error(ctx, error):
-    user = ctx.guild.get_member(ctx.author.id)
-    embed = discord.Embed(color = 0xffa500, title="Error:")
-    embed.add_field(name="Error message:", value=str(error), inline=False)
-    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-    embed.set_footer(text="Fox 2020 | demafurry#4811")
-    await user.send(embed=embed)
     nowtime = datetime.datetime.now()
     logging.error(str('[' + str(nowtime.year) + '/' + str(nowtime.month) + '/' + str(nowtime.day) + ' ' + str(nowtime.hour) + ':' + str(nowtime.minute) + ':' + str(nowtime.second) + '] <' + str(ctx.guild.name) + '(' +str(ctx.guild.id) + ')> <' + str(ctx.channel.name) + '(' + str(ctx.channel.id) + ')> <' + str(ctx.author.name) + '#' + str(ctx.author.discriminator) + '(' + str(ctx.author.id) + ')> ' + str(error)))
-    await ctx.message.delete()
 
 @bot.event
 async def on_guild_join(guild):
     user = bot.get_user(677156845332332556)
     await user.send("Бот " + str(bot.user.name) + " добавлен на сервер: " + str(guild.name))
     guildowner = guild.owner
-    embed = discord.Embed(color = 0xffa500, title="FoxBot", description="Привет, `" + str(guildowner.name) + "`,спасибо что добавил меня на сервер `" + str(guild.name) + "`. Ниже расположена вся необходимая информация:\n:exclamation: Прежде чем использовать бота, желательно добавить на свой сервер роль `FoxAdminAccess` и выдать её нужным участникам(Советуем не выдавать данную роль не доверенным лицам, так-как они, в противном случае - смогут почти полностью управлять вашим сервером, что опасно).\n:bangbang: Данного бота можно использовать во многих сценариях, но главным всё же остаётся РП.\n:anger: В случае неисправности, просим написать главному разработчику `demafurry#4811` и, желательно, подробно описать ошибку.\n:hotsprings: Данный бот написан на ЯП Python, все претензии к нему: :snake: , а не к разработчику. Если же вы считаете, что виноват *именно* ***разработчик***, а не :snake: , то писать тоже `demafurry#4811`.\n:globe_with_meridians: Бот в большинстве случаев использует чужое api из интернета, из-за которого иногда могут происходить ошибки.\n:white_check_mark: Для получения помощи, а именно, списка комманд для бота, напишите: `>>help` на сервере.")
+    embed = discord.Embed(color = 0xffa500, title="FoxBot", description="Привет, `" + str(guildowner.name) + "`,спасибо что добавили меня на сервер `" + str(guild.name) + "`. Ниже расположена вся необходимая информация:\n:exclamation: Прежде чем использовать бота, желательно добавить на свой сервер роль `FoxAdminAccess` и выдать её нужным участникам(Советуем не выдавать данную роль не доверенным лицам, так-как они, в противном случае - смогут почти полностью управлять вашим сервером, что опасно). Просим выдать боту роль с максимальными правами, иначе бот может работать некорректно.\n:bangbang: Данного бота можно использовать во многих сценариях, но главным всё же остаётся РП.\n:anger: В случае неисправности, просим написать главному разработчику `demafurry#4811` и, желательно, подробно описать ошибку.\n:hotsprings: Данный бот написан на ЯП Python, все претензии к нему: :snake: , а не к разработчику. Если же вы считаете, что виноват *именно* ***разработчик***, а не :snake: , то писать тоже `demafurry#4811`.\n:globe_with_meridians: Бот в большинстве случаев использует чужое api из интернета, из-за которого иногда могут происходить ошибки.\n:white_check_mark: Для получения помощи, а именно, списка комманд для бота, напишите: `>>help` на сервере.")
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     nowtime = datetime.datetime.now()
     logging.info('[' + str(nowtime.year) + '/' + str(nowtime.month) + '/' + str(nowtime.day) + ' ' + str(nowtime.hour) + ':' + str(nowtime.minute) + ':' + str(nowtime.second) + ']' + "Бот " + str(bot.user.name) + " добавлен на сервер: " + str(guild.name))
@@ -89,11 +82,9 @@ async def ping(ctx):
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     await ctx.send(embed=embed)
-    await ctx.message.delete()
 
 @bot.command(pass_context=True)
 async def slap(ctx, arg="None"):
-    await ctx.message.delete()
     if str(arg[0:2]) == "<@!":
         argid = int(arg[3:21])
     elif str(arg[0:2]) != "<@!":
@@ -125,7 +116,6 @@ async def slap(ctx, arg="None"):
 
 @bot.command(pass_context=True)
 async def hug(ctx, arg="None"):
-    await ctx.message.delete()
     if str(arg[0:2]) == "<@!":
         argid = int(arg[3:21])
     elif str(arg[0:2]) != "<@!":
@@ -157,7 +147,6 @@ async def hug(ctx, arg="None"):
 
 @bot.command(pass_context=True)
 async def lick(ctx, arg=str("None")):
-    await ctx.message.delete()
     if str(arg[0:2]) == "<@!":
         argid = int(arg[3:21])
     elif str(arg[0:2]) != "<@!":
@@ -189,7 +178,6 @@ async def lick(ctx, arg=str("None")):
 
 @bot.command(pass_context=True)
 async def pet(ctx, arg=str("None")):
-    await ctx.message.delete()
     if str(arg[0:2]) == "<@!":
         argid = int(arg[3:21])
     elif str(arg[0:2]) != "<@!":
@@ -221,7 +209,6 @@ async def pet(ctx, arg=str("None")):
 
 @bot.command(pass_context=True)
 async def kiss(ctx, arg="None"):
-    await ctx.message.delete()
     if str(arg[0:2]) == "<@!":
         argid = int(arg[3:21])
     elif str(arg[0:2]) != "<@!":
@@ -253,7 +240,6 @@ async def kiss(ctx, arg="None"):
 
 @bot.command(pass_context=True)
 async def punch(ctx, arg="None"):
-    await ctx.message.delete()
     if str(arg[0:2]) == "<@!":
         argid = int(arg[3:21])
     elif str(arg[0:2]) != "<@!":
@@ -285,7 +271,6 @@ async def punch(ctx, arg="None"):
 
 @bot.command(pass_context=True)
 async def invitebot(ctx):
-    await ctx.message.delete()
     embed = discord.Embed(title="Share this invite link | UwU", description="https://bit.ly/3kVIgEh/\nVK group: https://vk.com/foxbot_discord/", color=0xffa500)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
@@ -293,7 +278,6 @@ async def invitebot(ctx):
 
 @bot.command(pass_context=True)
 async def randomfox(ctx):
-    await ctx.message.delete()
     response = requests.get('https://randomfox.ca/floof/')
     json_data = json.loads(response.text)
     embed = discord.Embed(color = 0xffa500, title = 'Рандомная фотография лисы:')
@@ -304,7 +288,6 @@ async def randomfox(ctx):
 
 @bot.command(pass_context=True)
 async def randomdog(ctx):
-    await ctx.message.delete()
     response = requests.get('https://dog.ceo/api/breeds/image/random')
     json_data = json.loads(response.text)
     embed = discord.Embed(color = 0xffa500, title = 'Рандомная фотография собаки:')
@@ -315,7 +298,6 @@ async def randomdog(ctx):
 
 @bot.command(pass_context=True)
 async def randomcat(ctx):
-    await ctx.message.delete()
     response = requests.get('https://api.thecatapi.com/v1/images/search')
     json_data = json.loads(response.text)
     json_data = json_data[0]
@@ -327,7 +309,6 @@ async def randomcat(ctx):
 
 @bot.command(pass_context=True)
 async def shipp(ctx, user1, user2):
-    await ctx.message.delete()
     embed = discord.Embed(color = 0xffa500, description=str(ctx.author.mention) + " зашиперил " + str(user1) + " с " + str(user2))
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
@@ -335,7 +316,6 @@ async def shipp(ctx, user1, user2):
 
 @bot.command(pass_context=True)
 async def user(ctx, user=None):
-    await ctx.message.delete()
     if user == None:
         user = ctx.author
     elif user != None:
@@ -392,7 +372,6 @@ async def user(ctx, user=None):
 
 @bot.command()
 async def server(ctx):
-    await ctx.message.delete()
     nsfwchannelscount = 0
     memberscount = 0
     botscount = 0
@@ -472,7 +451,6 @@ async def server(ctx):
 
 @bot.command(pass_context=True)
 async def avatar(ctx, user=None):
-    await ctx.message.delete()
     if user == None:
         user = ctx.author
     elif user != None:
@@ -485,7 +463,6 @@ async def avatar(ctx, user=None):
 
 @bot.command(pass_context=True)
 async def say(ctx, *, message):
-    await ctx.message.delete()
     authorroles = ctx.author.roles
     for role in range(len(authorroles)):
         if str(authorroles[role]) == "FoxAdminAccess":
@@ -511,7 +488,6 @@ async def say(ctx, *, message):
 
 @bot.command(pass_context=True)
 async def botinfo(ctx):
-    await ctx.message.delete()
     botobj = ctx.guild.get_member(760437599524487189)
     allusers = 0
     allbots = 0
@@ -591,7 +567,7 @@ connections = {}
 voice_client = None
 
 @bot.command(pass_context=True)
-async def mplay(ctx, *, url="a4 - kids"):
+async def mplay(ctx, *, url="august"):
     guild = ctx.message.guild 
     member = ctx.message.author
     guild_id = guild.id
@@ -646,11 +622,9 @@ async def mplay(ctx, *, url="a4 - kids"):
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     await ctx.send(embed=embed)
-    await ctx.message.delete()
 
 @bot.command(pass_context=True)
 async def mstop(ctx):
-    await ctx.message.delete()
     guild = ctx.guild
     guild_id = guild.id
     if guild_id in connections:
@@ -662,7 +636,6 @@ async def mstop(ctx):
 
 @bot.command(pass_context=True)
 async def mleave(ctx):
-    await ctx.message.delete()
     guild = ctx.guild
     guild_id = guild.id
     if guild_id in connections:
@@ -676,7 +649,6 @@ async def mleave(ctx):
 
 @bot.command(pass_context=True)
 async def help(ctx):
-    await ctx.message.delete()
     embed = discord.Embed(color=0xffa500, title="Commands list:", description="Реакция Дать пощёчину:\n"
         "```>>slap {user}```Реакция Ударить:\n"
         "```>>punch {user}```Реакция Обнять:\n"
@@ -701,10 +673,6 @@ async def help(ctx):
         "```>>mleave```")
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
-    await ctx.author.send(embed=embed)
-    embed = discord.Embed(color=0xffa500, title="Help:", description="***" + str(ctx.author.name) + "***, проверьте личные сообщения.\nЕсли сообщение не пришло - **Откройте личные сообщения** или **Перейдите по ссылке:** https://bit.ly/2TNwdg9")
-    embed.set_footer(text="Fox 2020 | demafurry#4811")
-    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-    await ctx.channel.send(embed=embed)
+    await ctx.send(embed=embed)
 
 bot.run(config.TOKEN)
