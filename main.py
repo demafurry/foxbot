@@ -63,6 +63,9 @@ async def on_command_error(ctx, error):
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     await ctx.send(embed=embed)
+    embed = discord.Embed(color = 0xffa500, title="FoxBot", description="Здравствуйте, приносим свои извинения за неполадки в работе бота. Мы не ожидали что наш бот будет стоять на большом кол-ве серверов, из-за чего идёт очень большая нагрузка. Мы вынуждены ограничить скорсть использования комманд до 10 секунд. Мы постараемся вскоре решить эту проблему. Приносим свои извинения. По всем вопросам - пишите разработчику: `demafurry#4811`")
+    await ctx.channel.send(embed=embed)
+    await ctx.message.delete()
 
 @bot.event
 async def on_guild_join(guild):
@@ -80,8 +83,6 @@ async def on_guild_join(guild):
 async def on_command(ctx):
     nowtime = datetime.datetime.now()
     logging.info(str('[' + str(nowtime.year) + '/' + str(nowtime.month) + '/' + str(nowtime.day) + ' ' + str(nowtime.hour) + ':' + str(nowtime.minute) + ':' + str(nowtime.second) + '] <' + str(ctx.guild.name) + '(' +str(ctx.guild.id) + ')> <' + str(ctx.channel.name) + '(' + str(ctx.channel.id) + ')> <' + str(ctx.author.name) + '#' + str(ctx.author.discriminator) + '(' + str(ctx.author.id) + ')> ' + " Use command: " + str(ctx.message.content)))
-    embed = discord.Embed(color = 0xffa500, title="FoxBot", description="Здравствуйте, приносим свои извинения за неполадки в работе бота. Мы не ожидали что наш бот будет стоять на большом кол-ве серверов, из-за чего идёт очень большая нагрузка. Мы вынуждены ограничить скорсть использования комманд до 10 секунд. Мы постараемся вскоре решить эту проблему. Приносим свои извинения. По всем вопросам - пишите разработчику: `demafurry#4811`")
-    await ctx.channel.send(embed=embed)
     await ctx.message.delete()
 
 @commands.cooldown(1, 10, commands.BucketType.user)
@@ -679,5 +680,7 @@ async def help(ctx):
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     await ctx.send(embed=embed)
+    embed = discord.Embed(color = 0xffa500, title="FoxBot", description="Здравствуйте, приносим свои извинения за неполадки в работе бота. Мы не ожидали что наш бот будет стоять на большом кол-ве серверов, из-за чего идёт очень большая нагрузка. Мы вынуждены ограничить скорсть использования комманд до 10 секунд. Мы постараемся вскоре решить эту проблему. Приносим свои извинения. По всем вопросам - пишите разработчику: `demafurry#4811`")
+    await ctx.channel.send(embed=embed)
 
 bot.run(config.TOKEN)
