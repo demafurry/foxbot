@@ -84,12 +84,9 @@ async def ping(ctx):
     await ctx.send(embed=embed)
 
 @bot.command(pass_context=True)
-async def slap(ctx, arg="None"):
-    if str(arg[0:2]) == "<@!":
-        argid = int(arg[3:21])
-    elif str(arg[0:2]) != "<@!":
-        argid = int(0)
+async def slap(ctx, arg:discord.Member="None"):
     bot = int(760437599524487189)
+    argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
             randgif = random.randint(0, 14)
@@ -97,7 +94,7 @@ async def slap(ctx, arg="None"):
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " дал(-а) пощёчину всем"
             else:
-                embeddescription = str(ctx.author.mention) + " дал(-а) пощёчину " + str(arg)
+                embeddescription = str(ctx.author.mention) + " дал(-а) пощёчину " + str(arg.mention)
             embed = discord.Embed(description=embeddescription, color=0xffa500)
             embed.set_footer(text="Fox 2020 | demafurry#4811")
             embed.set_image(url=imagegif)
@@ -115,12 +112,9 @@ async def slap(ctx, arg="None"):
         await ctx.send(embed=embed)
 
 @bot.command(pass_context=True)
-async def hug(ctx, arg="None"):
-    if str(arg[0:2]) == "<@!":
-        argid = int(arg[3:21])
-    elif str(arg[0:2]) != "<@!":
-        argid = int(0)
+async def hug(ctx, arg:discord.Member="None"):
     bot = int(760437599524487189)
+    argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
             randgif = random.randint(0, 14)
@@ -128,7 +122,7 @@ async def hug(ctx, arg="None"):
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " обнял(-а) всех"
             else:
-                embeddescription = str(ctx.author.mention) + " обнял(-а) " + str(arg)
+                embeddescription = str(ctx.author.mention) + " обнял(-а) " + str(arg.mention)
             embed = discord.Embed(description=embeddescription, color=0xffa500)
             embed.set_footer(text="Fox 2020 | demafurry#4811")
             embed.set_image(url=imagegif)
@@ -146,12 +140,9 @@ async def hug(ctx, arg="None"):
         await ctx.send(embed=embed)
 
 @bot.command(pass_context=True)
-async def lick(ctx, arg=str("None")):
-    if str(arg[0:2]) == "<@!":
-        argid = int(arg[3:21])
-    elif str(arg[0:2]) != "<@!":
-        argid = int(0)
+async def lick(ctx, arg:discord.Member="None"):
     bot = int(760437599524487189)
+    argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
             randgif = random.randint(0, 14)
@@ -159,7 +150,7 @@ async def lick(ctx, arg=str("None")):
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " лизнул(-а) всех"
             else:
-                embeddescription = str(ctx.author.mention) + " лизнул(-а) " + str(arg)
+                embeddescription = str(ctx.author.mention) + " лизнул(-а) " + str(arg.mention)
             embed = discord.Embed(description=embeddescription, color=0xffa500)
             embed.set_footer(text="Fox 2020 | demafurry#4811")
             embed.set_image(url=imagegif)
@@ -177,12 +168,9 @@ async def lick(ctx, arg=str("None")):
         await ctx.send(embed=embed)
 
 @bot.command(pass_context=True)
-async def pet(ctx, arg=str("None")):
-    if str(arg[0:2]) == "<@!":
-        argid = int(arg[3:21])
-    elif str(arg[0:2]) != "<@!":
-        argid = int(0)
+async def pet(ctx, arg:discord.Member="None"):
     bot = int(760437599524487189)
+    argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
             randgif = random.randint(0, 14)
@@ -190,7 +178,7 @@ async def pet(ctx, arg=str("None")):
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " погладил(-а) всех"
             else:
-                embeddescription = str(ctx.author.mention) + " погладил(-а) " + str(arg)
+                embeddescription = str(ctx.author.mention) + " погладил(-а) " + str(arg.mention)
             embed = discord.Embed(description=embeddescription, color=0xffa500)
             embed.set_footer(text="Fox 2020 | demafurry#4811")
             embed.set_image(url=imagegif)
@@ -208,12 +196,9 @@ async def pet(ctx, arg=str("None")):
         await ctx.send(embed=embed)
 
 @bot.command(pass_context=True)
-async def kiss(ctx, arg="None"):
-    if str(arg[0:2]) == "<@!":
-        argid = int(arg[3:21])
-    elif str(arg[0:2]) != "<@!":
-        argid = int(0)
+async def kiss(ctx, arg:discord.Member="None"):
     bot = int(760437599524487189)
+    argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
             randgif = random.randint(0, 14)
@@ -221,7 +206,7 @@ async def kiss(ctx, arg="None"):
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " поцеловал(-а) всех"
             else:
-                embeddescription = str(ctx.author.mention) + " поцеловал(-а) " + str(arg)
+                embeddescription = str(ctx.author.mention) + " поцеловал(-а) " + str(arg.mention)
             embed = discord.Embed(description=embeddescription, color=0xffa500)
             embed.set_footer(text="Fox 2020 | demafurry#4811")
             embed.set_image(url=imagegif)
@@ -239,12 +224,9 @@ async def kiss(ctx, arg="None"):
         await ctx.send(embed=embed)
 
 @bot.command(pass_context=True)
-async def punch(ctx, arg="None"):
-    if str(arg[0:2]) == "<@!":
-        argid = int(arg[3:21])
-    elif str(arg[0:2]) != "<@!":
-        argid = int(0)
+async def punch(ctx, arg:discord.Member="None"):
     bot = int(760437599524487189)
+    argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
             randgif = random.randint(0, 14)
@@ -252,7 +234,7 @@ async def punch(ctx, arg="None"):
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " ударил(-а) всех"
             else:
-                embeddescription = str(ctx.author.mention) + " ударил(-а) " + str(arg)
+                embeddescription = str(ctx.author.mention) + " ударил(-а) " + str(arg.mention)
             embed = discord.Embed(description=embeddescription, color=0xffa500)
             embed.set_footer(text="Fox 2020 | demafurry#4811")
             embed.set_image(url=imagegif)
