@@ -34,6 +34,8 @@ from tkinter import *
 import flask
 from flask import Flask
 import json
+from discord import Member
+from discord.ext.commands import has_permissions, MissingPermissions
 
 bot = commands.Bot(command_prefix='>>', intents = discord.Intents.all())
 
@@ -75,6 +77,12 @@ async def on_command(ctx):
     logging.info(str('[' + str(nowtime.year) + '/' + str(nowtime.month) + '/' + str(nowtime.day) + ' ' + str(nowtime.hour) + ':' + str(nowtime.minute) + ':' + str(nowtime.second) + '] <' + str(ctx.guild.name) + '(' +str(ctx.guild.id) + ')> <' + str(ctx.channel.name) + '(' + str(ctx.channel.id) + ')> <' + str(ctx.author.name) + '#' + str(ctx.author.discriminator) + '(' + str(ctx.author.id) + ')> ' + " Use command: " + str(ctx.message.content)))
     embed = discord.Embed(color = 0xffa500, title="FoxBot", description="Здравствуйте, приносим свои извинения за неполадки в работе бота. Мы не ожидали что наш бот будет стоять на большом кол-ве серверов, из-за чего идёт очень большая нагрузка. Мы вынуждены ограничить скорсть использования комманд до 10 секунд. Мы постараемся вскоре решить эту проблему. Приносим свои извинения. По всем вопросам - пишите разработчику: `demafurry#4811`")
     await ctx.channel.send(embed=embed)
+
+@commands.cooldown(1, 10, commands.BucketType.user)
+@has_permissions(manage_messages=True)
+@bot.event
+async def on_command(ctx):
+    await ctx.message.delete()
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
