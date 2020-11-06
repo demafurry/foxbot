@@ -481,8 +481,8 @@ async def say(ctx, *, message):
             embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
             msgid = await ctx.send(embed=embed)
             if message[0] == "!":
-                end = False
-                while end != True:
+                end = 0
+                while end != 150:
                     embed = discord.Embed(color = 0xffa500, title=str(ctx.author.name) + " говорит:", description="➟ " + str(message[1:len(message)]))
                     embed.set_footer(text="Fox 2020 | demafurry#4811")
                     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
@@ -493,6 +493,7 @@ async def say(ctx, *, message):
                     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
                     await msgid.edit(embed=embed)
                     await asyncio.sleep(0.5)
+                    end += 1
             elif message[0] != "!":
                 await msgid.edit(embed=embed)
 
@@ -561,12 +562,15 @@ async def botservers(ctx):
     embed = discord.Embed(color = 0xffa500, title="Сервера с ботом:")
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-    await ctx.author.send(embed=embed)
+    msgid = await ctx.send(embed=embed)
     for guild in range(len(bot.guilds)):
+        await asyncio.sleep(1)
         embed = discord.Embed(color = 0xffa500)
         embed.add_field(name="\n**" + str(num) + ".** " + str(bot.guilds[guild].name), value="Владелец: **" + str(bot.guilds[guild].owner) + "**\nУчастников: **" + str(bot.guilds[guild].member_count) + "**", inline=False)
         num += 1
-        await ctx.author.send(embed=embed)
+        await msgid.edit(embed=embed)
+    await asyncio.sleep(1)
+    await msgid.delete()
 
 @commands.cooldown(1, 5, commands.BucketType.user)
 @bot.command(pass_context=True)
