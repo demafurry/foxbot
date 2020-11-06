@@ -459,11 +459,11 @@ async def server(ctx):
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
-async def avatar(ctx, user=None):
+async def avatar(ctx, user:discord.Member=None):
     if user == None:
         user = ctx.author
     elif user != None:
-        user = bot.get_user(int(user[3:21]))
+        user = ctx.guild.get_member(user.id)
     embed = discord.Embed(color = 0xffa500, title="Аватар " + user.name + ":")
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     embed.set_image(url=user.avatar_url)
