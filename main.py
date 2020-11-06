@@ -504,6 +504,7 @@ async def botinfo(ctx):
     textchannelscount = 0
     voicechannelscount = 0
     nsfwchannelscount = 0
+    allusers = 0
     for guild in range(len(bot.guilds)):
         for channel in range(len(bot.guilds[guild].text_channels)):
             textchannelscount += 1
@@ -514,6 +515,8 @@ async def botinfo(ctx):
         for channel in range(len(bot.guilds[guild].text_channels)):
             if bot.guilds[guild].text_channels[channel].nsfw == True:
                 nsfwchannelscount += 1
+    for members in range(len(bot.guilds)):
+        allusers += int(bot.guilds[members].member_count)
     monthslist = [
         "Янв",
         "Фев",
@@ -543,7 +546,7 @@ async def botinfo(ctx):
     totalram = (psutil.virtual_memory().total / 1000) / 1024
     embed = discord.Embed(color = 0xffa500, title="Информация о боте:")
     embed.add_field(name="Главное:", value="Имя пользователя: **" + str(bot.user.name) + "#" + str(bot.user.discriminator) + "**\nID: **" + str(bot.user.id) + "**\nАккаунт создан: **" + str(botobj.created_at.day) + " " + str(monthslist[int(botobj.created_at.month) - 1]) + ". " + str(botobj.created_at.year) + " г., " + str(botobj.created_at.hour) + ":" + str(botobj.created_at.minute) + ":" + str(botobj.created_at.second) + "**\nБот зашёл на данный сервер: **" + str(botobj.joined_at.day) + " " + str(monthslist[int(botobj.joined_at.month) - 1]) + ". " + str(botobj.joined_at.year) + " г., " + str(botobj.joined_at.hour) + ":" + str(botobj.joined_at.minute) + ":" + str(botobj.joined_at.second) + "**", inline=True)
-    embed.add_field(name="Сервера:", value="Кол-во серверов: **" + str(len(bot.guilds)) + "**\nКол-во текстовых каналов: **" + str(textchannelscount) + "**\nКол-во голосовых каналов: **" + str(voicechannelscount) + "**\nКол-во NSFW каналов: **" + str(nsfwchannelscount) + "**", inline=True)
+    embed.add_field(name="Сервера:", value="Кол-во серверов: **" + str(len(bot.guilds)) + "**\nКол-во участников: **" + str(allusers) + "**\nКол-во текстовых каналов: **" + str(textchannelscount) + "**\nКол-во голосовых каналов: **" + str(voicechannelscount) + "**\nКол-во NSFW каналов: **" + str(nsfwchannelscount) + "**", inline=True)
     embed.add_field(name="Системная информация:", value="RAM usage: **" + str(round(memory_usage()[0], 3)) + "/" + str(round(totalram, 3)) + "mb**\nOperating system family: **" + str(osnameslist[str(os.name)]) + "**\nOperating system platform: **" + str(ossysplatformslist[str(os.sys.platform)]) + "**\nProcessor: **" + str(platform.processor()) + "**\nOperating system: **" + str(platform.system()) + " " + str(platform.release()) + "**\nMachine: **" + str(platform.machine()) + "**\nArchitecture: **" + str(platform.architecture()[0]) + " | " + str(platform.architecture()[1]) + "**", inline=False)
     embed.set_thumbnail(url=bot.user.avatar_url)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
