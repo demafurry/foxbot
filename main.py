@@ -427,21 +427,22 @@ async def server(ctx):
     for channel in range(len(ctx.guild.text_channels)):
         if ctx.guild.text_channels[channel].nsfw == True:
             nsfwchannelscount += 1
-    for member in range(len(ctx.guild.members)):
-        if ctx.guild.members[member].bot == False:
-            memberscount += 1
-        elif ctx.guild.members[member].bot == True:
-            botscount += 1
-    for member in range(len(ctx.guild.members)):
-        if ctx.guild.members[member].bot == False:
-            if ctx.guild.members[member].status == discord.Status.online:
-                onlinememberscount += 1
-            elif ctx.guild.members[member].status == discord.Status.offline:
-                offlinememberscount += 1
-            elif ctx.guild.members[member].status == discord.Status.idle:
-                idlememberscount += 1
-            elif ctx.guild.members[member].status == discord.Status.dnd:
-                dndmemberscount += 1
+    if ctx.guild.member_count <= 250:
+        for member in range(len(ctx.guild.members)):
+            if ctx.guild.members[member].bot == False:
+                memberscount += 1
+            elif ctx.guild.members[member].bot == True:
+                botscount += 1
+        for member in range(len(ctx.guild.members)):
+            if ctx.guild.members[member].bot == False:
+                if ctx.guild.members[member].status == discord.Status.online:
+                    onlinememberscount += 1
+                elif ctx.guild.members[member].status == discord.Status.offline:
+                    offlinememberscount += 1
+                elif ctx.guild.members[member].status == discord.Status.idle:
+                    idlememberscount += 1
+                elif ctx.guild.members[member].status == discord.Status.dnd:
+                    dndmemberscount += 1
     regionslist = {
         "brazil": ":flag_br: Brazil",
         "eu-central": ":flag_eu: Central Europe",
@@ -481,8 +482,11 @@ async def server(ctx):
         "Нояб",
         "Дек"]
     embed = discord.Embed(color = 0xffa500, title=ctx.guild.name)
-    embed.add_field(name="Участники:", value="Всего: **" + str(len(ctx.guild.members)) + "**\nУчастников: **" + str(memberscount) + "**\nБотов: **" + str(botscount) + "**", inline=True)
-    embed.add_field(name="По статусам:", value=":green_circle: Онлайн: **" + str(onlinememberscount) + "**\n:crescent_moon: Не активен: **" + str(idlememberscount) + "**\n:no_entry: Не беспокоить: **" + str(dndmemberscount) + "**\n:black_circle: Оффлайн: **" + str(offlinememberscount) + "**", inline=True)
+    if ctx.guild.member_count <= 250:
+        embed.add_field(name="Участники:", value="Всего: **" + str(ctx.guild.member_count) + "**\nУчастников: **" + str(memberscount) + "**\nБотов: **" + str(botscount) + "**", inline=True)
+        embed.add_field(name="По статусам:", value="<:online:774714607126052904>Онлайн: **" + str(onlinememberscount) + "**\n<:idle:774714606831665154>Не активен: **" + str(idlememberscount) + "**\n<:dnd:774714607054880788>Не беспокоить: **" + str(dndmemberscount) + "**\n<:offline:774714606785527839>Оффлайн: **" + str(offlinememberscount) + "**", inline=True)
+    else:
+        embed.add_field(name="Участники:", value="Всего: **" + str(ctx.guild.member_count) + "**", inline=True)
     embed.add_field(name="Каналы:", value="Всего: **" + str(len(ctx.guild.channels)) + "**\nТекстовых: **" + str(len(ctx.guild.text_channels)) + "**\nГолосовых: **" + str(len(ctx.guild.voice_channels)) + "**\nNSFW: **" + str(nsfwchannelscount) + "**", inline=False)
     embed.add_field(name="Владелец:", value=str(ctx.guild.owner), inline=True)
     embed.add_field(name="Регион:", value=str(regionslist[str(ctx.guild.region)]), inline=True)
