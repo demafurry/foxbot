@@ -36,6 +36,8 @@ from flask import Flask
 import json
 from discord import Member
 from discord.ext.commands import has_permissions, MissingPermissions
+import memedict
+from memedict import search
 
 bot = commands.Bot(command_prefix='>>', intents = discord.Intents.all())
 
@@ -44,6 +46,8 @@ bot.remove_command('help')
 nowtime = datetime.datetime.now()
 filename = "logs/" + str(nowtime.year) + "." + str(nowtime.month) + "." + str(nowtime.day) + " " + str(nowtime.hour) + "." + str(nowtime.minute) + "." + str(nowtime.second) + " main.log"
 logging.basicConfig(filename=filename, filemode='w', format=u'%(name)s | %(levelname)s | %(message)s', level=logging.INFO)
+
+reddit = config.redditconfig
 
 @bot.event
 async def on_ready():
@@ -84,6 +88,31 @@ async def on_command(ctx):
     nowtime = datetime.datetime.now()
     logging.info(str('[' + str(nowtime.year) + '/' + str(nowtime.month) + '/' + str(nowtime.day) + ' ' + str(nowtime.hour) + ':' + str(nowtime.minute) + ':' + str(nowtime.second) + '] <' + str(ctx.guild.name) + '(' +str(ctx.guild.id) + ')> <' + str(ctx.channel.name) + '(' + str(ctx.channel.id) + ')> <' + str(ctx.author.name) + '#' + str(ctx.author.discriminator) + '(' + str(ctx.author.id) + ')> ' + " Use command: " + str(ctx.message.content)))
     await ctx.message.delete()
+
+@commands.cooldown(1, 10, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def meme(ctx, arg="furry"):
+    subreddit = reddit.subreddit(str(arg) + "_irl")
+    memes_submissions = subreddit.hot()
+    post_to_pick = random.randint(1, 10)
+    for i in range(0, post_to_pick):
+        submission = next(x for x in memes_submissions if not x.stickied)
+    embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+    embed.set_image(url=str(submission.url))
+    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    embed.set_footer(text="Fox 2020 | demafurry#4811")
+    await ctx.channel.send(embed=embed)
+
+@commands.cooldown(1, 10, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def foxgrl(ctx):
+    apiout = requests.get('https://nekos.life/api/v2/img/fox_girl').json()
+    apiout = apiout['url']
+    embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+    embed.set_image(url=str(apiout))
+    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    embed.set_footer(text="Fox 2020 | demafurry#4811")
+    await ctx.channel.send(embed=embed)
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
