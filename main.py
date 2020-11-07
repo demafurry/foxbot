@@ -121,7 +121,6 @@ async def ping(ctx):
     await testmsg.delete()
     embed = discord.Embed(color = 0xffa500, title="Pong, " + str(ctx.author.name) + "!")
     embed.add_field(name="ws/API Latency:", value=str(round(bot.latency, 5)) + "s", inline=False)
-    embed.add_field(name="Message Latency:", value=str(testmsg.created_at.microsecond - ctx.message.created_at.microsecond) + "ms", inline=False)
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     await ctx.send(embed=embed)
