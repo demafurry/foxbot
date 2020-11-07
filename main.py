@@ -314,11 +314,19 @@ async def randomcat(ctx):
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
-async def shipp(ctx, user1, user2):
-    embed = discord.Embed(color = 0xffa500, description=str(ctx.author.mention) + " зашиперил " + str(user1) + " с " + str(user2))
-    embed.set_footer(text="Fox 2020 | demafurry#4811")
-    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-    await ctx.send(embed=embed)
+async def shipp(ctx, user1:discord.Member, user2:discord.Member):
+    user1 = ctx.guild.get_member(user1.id)
+    user2 = ctx.guild.get_member(user2.id)
+    if user1.id != user2.id and user1.id != ctx.author.id and user2.id != ctx.author.id:
+        embed = discord.Embed(color = 0xffa500, description=str(ctx.author.mention) + " зашиперил " + str(user1.mention) + " с " + str(user2.mention))
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
+    else:
+        embed = discord.Embed(title="Error:", description="Вы не можете выполнить данное действие.", color=0xffa500)
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
