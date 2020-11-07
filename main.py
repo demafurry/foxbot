@@ -724,7 +724,9 @@ async def help(ctx):
         "```>>botinfo```Включить музыку(YouTube, nsfw контент игнорируется, может не сработать с 1 раза):\n"
         "```>>mplay {url | search}```Выключить музыку:\n"
         "```>>mstop```Выгнать бота из голосового чата:\n"
-        "```>>mleave```")
+        "```>>mleave```Рандомный мем с Reddit:\n"
+        "```>>meme {theme}```Рандомная аниме-тян - лисичка ^^:\n"
+        "```>>foxgrl```")
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     await ctx.send(embed=embed)
