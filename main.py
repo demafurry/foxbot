@@ -718,7 +718,7 @@ async def mleave(ctx):
 @commands.cooldown(1, 5, commands.BucketType.user)
 @bot.command(pass_context=True)
 async def anal(ctx):
-    if ctx.channel.id == 752243777900511295:
+    if ctx.channel.nsfw == True:
         apiout = requests.get('https://nekos.life/api/v2/img/anal').json()
         apiout = apiout['url']
         embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
@@ -730,7 +730,7 @@ async def anal(ctx):
 @commands.cooldown(1, 5, commands.BucketType.user)
 @bot.command(pass_context=True)
 async def yuri(ctx):
-    if ctx.channel.id == 752243777900511295:
+    if ctx.channel.nsfw == True:
         apiout = requests.get('https://nekos.life/api/v2/img/yuri').json()
         apiout = apiout['url']
         embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
@@ -742,7 +742,7 @@ async def yuri(ctx):
 @commands.cooldown(1, 5, commands.BucketType.user)
 @bot.command(pass_context=True)
 async def hentai(ctx):
-    if ctx.channel.id == 752243777900511295:
+    if ctx.channel.nsfw == True:
         apiout = requests.get('https://nekos.life/api/v2/img/Random_hentai_gif').json()
         apiout = apiout['url']
         embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
@@ -754,7 +754,7 @@ async def hentai(ctx):
 @commands.cooldown(1, 5, commands.BucketType.user)
 @bot.command(pass_context=True)
 async def ero(ctx):
-    if ctx.channel.id == 752243777900511295:
+    if ctx.channel.nsfw == True:
         apiout = requests.get('https://nekos.life/api/v2/img/erokemo').json()
         apiout = apiout['url']
         embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
@@ -766,7 +766,7 @@ async def ero(ctx):
 @commands.cooldown(1, 5, commands.BucketType.user)
 @bot.command(pass_context=True)
 async def eroyuri(ctx):
-    if ctx.channel.id == 752243777900511295:
+    if ctx.channel.nsfw == True:
         apiout = requests.get('https://nekos.life/api/v2/img/eroyuri').json()
         apiout = apiout['url']
         embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
@@ -778,7 +778,7 @@ async def eroyuri(ctx):
 @commands.cooldown(1, 5, commands.BucketType.user)
 @bot.command(pass_context=True)
 async def yiff(ctx, arg="Gay"):
-    if ctx.channel.id == 752243777900511295:
+    if ctx.channel.nsfw == True:
         if str(arg) == "Bulge" or str(arg) == "bulge":
             apiout = requests.get('https://api.furry.bot/v2/Furry/Bulge').json()
             apiout = apiout['images']
