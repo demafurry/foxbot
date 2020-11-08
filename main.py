@@ -91,6 +91,13 @@ async def on_command(ctx):
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
+async def votes(ctx):
+    headers = {"Authorization": config.botslistapitoken}
+    re = requests.post('https://api.server-discord.com/v2/bots/760437599524487189/stats', data={""}, headers=headers)
+    print(str(re))
+
+@commands.cooldown(1, 10, commands.BucketType.user)
+@bot.command(pass_context=True)
 async def meme(ctx, arg="furry"):
     subreddit = reddit.subreddit(str(arg) + "_irl")
     memes_submissions = subreddit.hot()
