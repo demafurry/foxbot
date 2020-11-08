@@ -36,6 +36,10 @@ from flask import Flask
 import json
 from discord import Member
 from discord.ext.commands import has_permissions, MissingPermissions
+import memedict
+from memedict import search
+import vk_api
+import vk
 
 bot = commands.Bot(command_prefix='>>', intents = discord.Intents.all())
 
@@ -44,6 +48,8 @@ bot.remove_command('help')
 nowtime = datetime.datetime.now()
 filename = "logs/" + str(nowtime.year) + "." + str(nowtime.month) + "." + str(nowtime.day) + " " + str(nowtime.hour) + "." + str(nowtime.minute) + "." + str(nowtime.second) + " main.log"
 logging.basicConfig(filename=filename, filemode='w', format=u'%(name)s | %(levelname)s | %(message)s', level=logging.INFO)
+
+reddit = config.redditconfig
 
 @bot.event
 async def on_ready():
@@ -87,12 +93,43 @@ async def on_command(ctx):
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
+async def votes(ctx):
+    headers = {"Authorization": config.botslistapitoken}
+    re = requests.post('https://api.server-discord.com/v2/bots/760437599524487189/stats', data={""}, headers=headers)
+    print(str(re))
+
+@commands.cooldown(1, 10, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def meme(ctx, arg="furry"):
+    subreddit = reddit.subreddit(str(arg) + "_irl")
+    memes_submissions = subreddit.hot()
+    post_to_pick = random.randint(1, 10)
+    for i in range(0, post_to_pick):
+        submission = next(x for x in memes_submissions if not x.stickied)
+    embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+    embed.set_image(url=str(submission.url))
+    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    embed.set_footer(text="Fox 2020 | demafurry#4811")
+    await ctx.channel.send(embed=embed)
+
+@commands.cooldown(1, 10, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def foxgrl(ctx):
+    apiout = requests.get('https://nekos.life/api/v2/img/fox_girl').json()
+    apiout = apiout['url']
+    embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+    embed.set_image(url=str(apiout))
+    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    embed.set_footer(text="Fox 2020 | demafurry#4811")
+    await ctx.channel.send(embed=embed)
+
+@commands.cooldown(1, 10, commands.BucketType.user)
+@bot.command(pass_context=True)
 async def ping(ctx):
     testmsg = await ctx.send("Working...")
     await testmsg.delete()
     embed = discord.Embed(color = 0xffa500, title="Pong, " + str(ctx.author.name) + "!")
     embed.add_field(name="ws/API Latency:", value=str(round(bot.latency, 5)) + "s", inline=False)
-    embed.add_field(name="Message Latency:", value=str(testmsg.created_at.microsecond - ctx.message.created_at.microsecond) + "ms", inline=False)
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     await ctx.send(embed=embed)
@@ -314,19 +351,27 @@ async def randomcat(ctx):
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
-async def shipp(ctx, user1, user2):
-    embed = discord.Embed(color = 0xffa500, description=str(ctx.author.mention) + " зашиперил " + str(user1) + " с " + str(user2))
-    embed.set_footer(text="Fox 2020 | demafurry#4811")
-    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-    await ctx.send(embed=embed)
+async def shipp(ctx, user1:discord.Member, user2:discord.Member):
+    user1 = ctx.guild.get_member(user1.id)
+    user2 = ctx.guild.get_member(user2.id)
+    if user1.id != user2.id and user1.id != ctx.author.id and user2.id != ctx.author.id:
+        embed = discord.Embed(color = 0xffa500, description=str(ctx.author.mention) + " зашиперил " + str(user1.mention) + " с " + str(user2.mention))
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
+    else:
+        embed = discord.Embed(title="Error:", description="Вы не можете выполнить данное действие.", color=0xffa500)
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
-async def user(ctx, user=None):
+async def user(ctx, user:discord.Member=None):
     if user == None:
         user = ctx.author
     elif user != None:
-        user = ctx.guild.get_member(int(user[3:21]))
+        user = ctx.guild.get_member(user.id)
     if user.bot == True:
         botcheck = "(Bot)"
     elif user.bot == False:
@@ -390,21 +435,22 @@ async def server(ctx):
     for channel in range(len(ctx.guild.text_channels)):
         if ctx.guild.text_channels[channel].nsfw == True:
             nsfwchannelscount += 1
-    for member in range(len(ctx.guild.members)):
-        if ctx.guild.members[member].bot == False:
-            memberscount += 1
-        elif ctx.guild.members[member].bot == True:
-            botscount += 1
-    for member in range(len(ctx.guild.members)):
-        if ctx.guild.members[member].bot == False:
-            if ctx.guild.members[member].status == discord.Status.online:
-                onlinememberscount += 1
-            elif ctx.guild.members[member].status == discord.Status.offline:
-                offlinememberscount += 1
-            elif ctx.guild.members[member].status == discord.Status.idle:
-                idlememberscount += 1
-            elif ctx.guild.members[member].status == discord.Status.dnd:
-                dndmemberscount += 1
+    if ctx.guild.member_count <= 250:
+        for member in range(len(ctx.guild.members)):
+            if ctx.guild.members[member].bot == False:
+                memberscount += 1
+            elif ctx.guild.members[member].bot == True:
+                botscount += 1
+        for member in range(len(ctx.guild.members)):
+            if ctx.guild.members[member].bot == False:
+                if ctx.guild.members[member].status == discord.Status.online:
+                    onlinememberscount += 1
+                elif ctx.guild.members[member].status == discord.Status.offline:
+                    offlinememberscount += 1
+                elif ctx.guild.members[member].status == discord.Status.idle:
+                    idlememberscount += 1
+                elif ctx.guild.members[member].status == discord.Status.dnd:
+                    dndmemberscount += 1
     regionslist = {
         "brazil": ":flag_br: Brazil",
         "eu-central": ":flag_eu: Central Europe",
@@ -444,8 +490,11 @@ async def server(ctx):
         "Нояб",
         "Дек"]
     embed = discord.Embed(color = 0xffa500, title=ctx.guild.name)
-    embed.add_field(name="Участники:", value="Всего: **" + str(len(ctx.guild.members)) + "**\nУчастников: **" + str(memberscount) + "**\nБотов: **" + str(botscount) + "**", inline=True)
-    embed.add_field(name="По статусам:", value=":green_circle: Онлайн: **" + str(onlinememberscount) + "**\n:crescent_moon: Не активен: **" + str(idlememberscount) + "**\n:no_entry: Не беспокоить: **" + str(dndmemberscount) + "**\n:black_circle: Оффлайн: **" + str(offlinememberscount) + "**", inline=True)
+    if ctx.guild.member_count <= 250:
+        embed.add_field(name="Участники:", value="Всего: **" + str(ctx.guild.member_count) + "**\nУчастников: **" + str(memberscount) + "**\nБотов: **" + str(botscount) + "**", inline=True)
+        embed.add_field(name="По статусам:", value="<:online:774714607126052904>Онлайн: **" + str(onlinememberscount) + "**\n<:idle:774714606831665154>Не активен: **" + str(idlememberscount) + "**\n<:dnd:774714607054880788>Не беспокоить: **" + str(dndmemberscount) + "**\n<:offline:774714606785527839>Оффлайн: **" + str(offlinememberscount) + "**", inline=True)
+    else:
+        embed.add_field(name="Участники:", value="Всего: **" + str(ctx.guild.member_count) + "**", inline=True)
     embed.add_field(name="Каналы:", value="Всего: **" + str(len(ctx.guild.channels)) + "**\nТекстовых: **" + str(len(ctx.guild.text_channels)) + "**\nГолосовых: **" + str(len(ctx.guild.voice_channels)) + "**\nNSFW: **" + str(nsfwchannelscount) + "**", inline=False)
     embed.add_field(name="Владелец:", value=str(ctx.guild.owner), inline=True)
     embed.add_field(name="Регион:", value=str(regionslist[str(ctx.guild.region)]), inline=True)
@@ -459,11 +508,11 @@ async def server(ctx):
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
-async def avatar(ctx, user=None):
+async def avatar(ctx, user:discord.Member=None):
     if user == None:
         user = ctx.author
     elif user != None:
-        user = bot.get_user(int(user[3:21]))
+        user = ctx.guild.get_member(user.id)
     embed = discord.Embed(color = 0xffa500, title="Аватар " + user.name + ":")
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     embed.set_image(url=user.avatar_url)
@@ -683,7 +732,9 @@ async def help(ctx):
         "```>>botinfo```Включить музыку(YouTube, nsfw контент игнорируется, может не сработать с 1 раза):\n"
         "```>>mplay {url | search}```Выключить музыку:\n"
         "```>>mstop```Выгнать бота из голосового чата:\n"
-        "```>>mleave```")
+        "```>>mleave```Рандомный мем с Reddit:\n"
+        "```>>meme {theme}```Рандомная аниме-тян - лисичка ^^:\n"
+        "```>>foxgrl```")
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     await ctx.send(embed=embed)
