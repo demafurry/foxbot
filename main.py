@@ -38,6 +38,11 @@ from discord import Member
 from discord.ext.commands import has_permissions, MissingPermissions
 import memedict
 from memedict import search
+<<<<<<< HEAD
+import vk_api
+import vk
+=======
+>>>>>>> d99d77e0150cb835566f56a1f79ee9d80305f6e8
 
 bot = commands.Bot(command_prefix='>>', intents = discord.Intents.all())
 
