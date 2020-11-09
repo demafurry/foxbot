@@ -108,6 +108,16 @@ async def meme(ctx, arg="furry_irl"):
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
+async def petpet(ctx):
+    re = ctx.message.attachments[0].proxy_url
+    embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+    embed.set_image(url=re)
+    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    embed.set_footer(text="Fox 2020 | demafurry#4811")
+    await ctx.send(embed=embed)
+
+@commands.cooldown(1, 10, commands.BucketType.user)
+@bot.command(pass_context=True)
 async def foxgrl(ctx):
     apiout = requests.get('https://nekos.life/api/v2/img/fox_girl').json()
     apiout = apiout['url']
