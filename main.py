@@ -38,11 +38,9 @@ from discord import Member
 from discord.ext.commands import has_permissions, MissingPermissions
 import memedict
 from memedict import search
-<<<<<<< HEAD
 import vk_api
 import vk
-=======
->>>>>>> d99d77e0150cb835566f56a1f79ee9d80305f6e8
+import nekos
 
 bot = commands.Bot(command_prefix='>>', intents = discord.Intents.all())
 
@@ -96,15 +94,8 @@ async def on_command(ctx):
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
-async def votes(ctx):
-    headers = {"Authorization": config.botslistapitoken}
-    re = requests.post('https://api.server-discord.com/v2/bots/760437599524487189/stats', data={""}, headers=headers)
-    print(str(re))
-
-@commands.cooldown(1, 10, commands.BucketType.user)
-@bot.command(pass_context=True)
-async def meme(ctx, arg="furry"):
-    subreddit = reddit.subreddit(str(arg) + "_irl")
+async def meme(ctx, arg="furry_irl"):
+    subreddit = reddit.subreddit(str(arg))
     memes_submissions = subreddit.hot()
     post_to_pick = random.randint(1, 10)
     for i in range(0, post_to_pick):
@@ -114,6 +105,16 @@ async def meme(ctx, arg="furry"):
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     await ctx.channel.send(embed=embed)
+
+@commands.cooldown(1, 10, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def petpet(ctx):
+    re = ctx.message.attachments[0].proxy_url
+    embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+    embed.set_image(url=re)
+    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    embed.set_footer(text="Fox 2020 | demafurry#4811")
+    await ctx.send(embed=embed)
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
@@ -144,8 +145,8 @@ async def slap(ctx, arg:discord.Member="None"):
     argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
-            randgif = random.randint(0, 14)
-            imagegif = "https://kurobot.pw/gifs/slap/" + str(randgif) + ".gif"
+            imagegif = requests.get('https://nekos.life/api/v2/img/slap').json()
+            imagegif = imagegif['url']
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " дал(-а) пощёчину всем"
             else:
@@ -173,8 +174,8 @@ async def hug(ctx, arg:discord.Member="None"):
     argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
-            randgif = random.randint(0, 14)
-            imagegif = "https://kurobot.pw/gifs/hug/" + str(randgif) + ".gif"
+            imagegif = requests.get('https://nekos.life/api/v2/img/hug').json()
+            imagegif = imagegif['url']
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " обнял(-а) всех"
             else:
@@ -202,7 +203,7 @@ async def lick(ctx, arg:discord.Member="None"):
     argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
-            randgif = random.randint(0, 14)
+            randgif = random.randint(0, 11)
             imagegif = "https://kurobot.pw/gifs/lick/" + str(randgif) + ".gif"
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " лизнул(-а) всех"
@@ -226,13 +227,13 @@ async def lick(ctx, arg:discord.Member="None"):
 
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
-async def pet(ctx, arg:discord.Member="None"):
+async def pat(ctx, arg:discord.Member="None"):
     bot = int(760437599524487189)
     argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
-            randgif = random.randint(0, 14)
-            imagegif = "https://kurobot.pw/gifs/pat/" + str(randgif) + ".gif"
+            imagegif = requests.get('https://nekos.life/api/v2/img/pat').json()
+            imagegif = imagegif['url']
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " погладил(-а) всех"
             else:
@@ -260,8 +261,8 @@ async def kiss(ctx, arg:discord.Member="None"):
     argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
-            randgif = random.randint(0, 14)
-            imagegif = "https://kurobot.pw/gifs/kiss/" + str(randgif) + ".gif"
+            imagegif = requests.get('https://nekos.life/api/v2/img/kiss').json()
+            imagegif = imagegif['url']
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " поцеловал(-а) всех"
             else:
@@ -289,7 +290,7 @@ async def punch(ctx, arg:discord.Member="None"):
     argid = ctx.guild.get_member(arg)
     if argid != bot:
         if argid != ctx.author.id:
-            randgif = random.randint(0, 14)
+            randgif = random.randint(0, 16)
             imagegif = "https://kurobot.pw/gifs/punch/" + str(randgif) + ".gif"
             if arg == "None":
                 embeddescription = str(ctx.author.mention) + " ударил(-а) всех"
@@ -313,7 +314,7 @@ async def punch(ctx, arg:discord.Member="None"):
 
 @bot.command(pass_context=True)
 async def invitebot(ctx):
-    embed = discord.Embed(title="Share this invite link | UwU", description="https://bit.ly/3kVIgEh/\nVK group: https://vk.com/foxbot_discord/", color=0xffa500)
+    embed = discord.Embed(title="Share this invite link | UwU", description="https://bit.ly/2JVoP0D\nVK group: https://vk.com/foxbot_discord", color=0xffa500)
     embed.set_footer(text="Fox 2020 | demafurry#4811")
     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     await ctx.send(embed=embed)
@@ -711,37 +712,232 @@ async def mleave(ctx):
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
+### > Ниже только nsfw!!! Меня заставили(Нет, просто мне надо теги накручивать)
+### < .........................................................................
+### > .....####........### .....#####..... ############### ###.........###.....
+### < .....#####.......### ...####.####... ############### ###.........###.....
+### > .....######......### ..##.......##.. ###............ ###.........###.....
+### < .....###.####....### ..#####........ ###............ ###...###...###.....
+### > .....###..#####..### ....#######.... ##########..... ###..#####..###.....
+### < .....###....####.### ........#####.. ##########..... ###.###.###.###.....
+### > .....###......###### ..##.......##.. ###............ ######...######.....
+### < .....###.......##### ...####.####... ###............ #####.....#####.....
+### > .....###........#### .....#####..... ###............ ####.......####.....
+### < .........................................................................
+
+@commands.cooldown(1, 5, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def anal(ctx):
+    if ctx.channel.nsfw == True:
+        apiout = requests.get('https://nekos.life/api/v2/img/anal').json()
+        apiout = apiout['url']
+        embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+        embed.set_image(url=str(apiout))
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        await ctx.channel.send(embed=embed)
+
+@commands.cooldown(1, 5, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def yuri(ctx):
+    if ctx.channel.nsfw == True:
+        apiout = requests.get('https://nekos.life/api/v2/img/yuri').json()
+        apiout = apiout['url']
+        embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+        embed.set_image(url=str(apiout))
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        await ctx.channel.send(embed=embed)
+
+@commands.cooldown(1, 5, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def hentai(ctx):
+    if ctx.channel.nsfw == True:
+        apiout = requests.get('https://nekos.life/api/v2/img/Random_hentai_gif').json()
+        apiout = apiout['url']
+        embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+        embed.set_image(url=str(apiout))
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        await ctx.channel.send(embed=embed)
+
+@commands.cooldown(1, 5, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def ero(ctx):
+    if ctx.channel.nsfw == True:
+        apiout = requests.get('https://nekos.life/api/v2/img/erokemo').json()
+        apiout = apiout['url']
+        embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+        embed.set_image(url=str(apiout))
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        await ctx.channel.send(embed=embed)
+
+@commands.cooldown(1, 5, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def eroyuri(ctx):
+    if ctx.channel.nsfw == True:
+        apiout = requests.get('https://nekos.life/api/v2/img/eroyuri').json()
+        apiout = apiout['url']
+        embed = discord.Embed(color = 0xffa500, title=str("Держи:"))
+        embed.set_image(url=str(apiout))
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        await ctx.channel.send(embed=embed)
+
+@commands.cooldown(1, 5, commands.BucketType.user)
+@bot.command(pass_context=True)
+async def yiff(ctx, arg="Gay"):
+    if ctx.channel.nsfw == True:
+        if str(arg) == "Bulge" or str(arg) == "bulge":
+            apiout = requests.get('https://api.furry.bot/v2/Furry/Bulge').json()
+            apiout = apiout['images']
+            apiout = apiout[0]
+            artistsapi = apiout['artists']
+            artists = ""
+            sourcesapi = apiout['sources']
+            sources = ""
+            urllink = apiout['url']
+            surllink = apiout['shortURL']
+            reportlink = apiout['reportURL']
+            for artist in range(len(artistsapi)):
+                artists = str(artists) + "\n" + str(int(artist + 1)) + ". " + str(artistsapi[int(artist)])
+            for source in range(len(sourcesapi)):
+                sources = str(sources) + "\n" + str(int(source + 1)) + ". " + str(sourcesapi[int(source)])
+            apiout = apiout['url']
+            embed = discord.Embed(color = 0xffa500, title=str("Держи..."))
+            embed.add_field(name="Artists:", value=str(artists), inline=False)
+            embed.add_field(name="Sources:", value=str(sources), inline=False)
+            embed.add_field(name="URL's:", value=str(urllink) + "\n" + str(surllink), inline=False)
+            embed.add_field(name="Report:", value=str(reportlink), inline=False)
+            embed.set_image(url=str(apiout))
+            embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+            embed.set_footer(text="Fox 2020 | demafurry#4811")
+            await ctx.channel.send(embed=embed)
+        elif str(arg) == "Gay" or str(arg) == "gay":
+            apiout = requests.get('https://api.furry.bot/v2/Furry/Yiff/Gay').json()
+            apiout = apiout['images']
+            apiout = apiout[0]
+            artistsapi = apiout['artists']
+            artists = ""
+            sourcesapi = apiout['sources']
+            sources = ""
+            urllink = apiout['url']
+            surllink = apiout['shortURL']
+            reportlink = apiout['reportURL']
+            for artist in range(len(artistsapi)):
+                artists = str(artists) + "\n" + str(int(artist + 1)) + ". " + str(artistsapi[int(artist)])
+            for source in range(len(sourcesapi)):
+                sources = str(sources) + "\n" + str(int(source + 1)) + ". " + str(sourcesapi[int(source)])
+            apiout = apiout['url']
+            embed = discord.Embed(color = 0xffa500, title=str("Держи..."))
+            embed.add_field(name="Artists:", value=str(artists), inline=False)
+            embed.add_field(name="Sources:", value=str(sources), inline=False)
+            embed.add_field(name="URL's:", value=str(urllink) + "\n" + str(surllink), inline=False)
+            embed.add_field(name="Report:", value=str(reportlink), inline=False)
+            embed.set_image(url=str(apiout))
+            embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+            embed.set_footer(text="Fox 2020 | demafurry#4811")
+            await ctx.channel.send(embed=embed)
+        elif str(arg) == "Lesbian" or str(arg) == "lesbian":
+            apiout = requests.get('https://api.furry.bot/v2/Furry/Yiff/Lesbian').json()
+            apiout = apiout['images']
+            apiout = apiout[0]
+            artistsapi = apiout['artists']
+            artists = ""
+            sourcesapi = apiout['sources']
+            sources = ""
+            urllink = apiout['url']
+            surllink = apiout['shortURL']
+            reportlink = apiout['reportURL']
+            for artist in range(len(artistsapi)):
+                artists = str(artists) + "\n" + str(int(artist + 1)) + ". " + str(artistsapi[int(artist)])
+            for source in range(len(sourcesapi)):
+                sources = str(sources) + "\n" + str(int(source + 1)) + ". " + str(sourcesapi[int(source)])
+            apiout = apiout['url']
+            embed = discord.Embed(color = 0xffa500, title=str("Держи..."))
+            embed.add_field(name="Artists:", value=str(artists), inline=False)
+            embed.add_field(name="Sources:", value=str(sources), inline=False)
+            embed.add_field(name="URL's:", value=str(urllink) + "\n" + str(surllink), inline=False)
+            embed.add_field(name="Report:", value=str(reportlink), inline=False)
+            embed.set_image(url=str(apiout))
+            embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+            embed.set_footer(text="Fox 2020 | demafurry#4811")
+            await ctx.channel.send(embed=embed)
+        elif str(arg) == "Straight" or str(arg) == "straight":
+            apiout = requests.get('https://api.furry.bot/v2/Furry/Yiff/Straight').json()
+            apiout = apiout['images']
+            apiout = apiout[0]
+            artistsapi = apiout['artists']
+            artists = ""
+            sourcesapi = apiout['sources']
+            sources = ""
+            urllink = apiout['url']
+            surllink = apiout['shortURL']
+            reportlink = apiout['reportURL']
+            for artist in range(len(artistsapi)):
+                artists = str(artists) + "\n" + str(int(artist + 1)) + ". " + str(artistsapi[int(artist)])
+            for source in range(len(sourcesapi)):
+                sources = str(sources) + "\n" + str(int(source + 1)) + ". " + str(sourcesapi[int(source)])
+            apiout = apiout['url']
+            embed = discord.Embed(color = 0xffa500, title=str("Держи..."))
+            embed.add_field(name="Artists:", value=str(artists), inline=False)
+            embed.add_field(name="Sources:", value=str(sources), inline=False)
+            embed.add_field(name="URL's:", value=str(urllink) + "\n" + str(surllink), inline=False)
+            embed.add_field(name="Report:", value=str(reportlink), inline=False)
+            embed.set_image(url=str(apiout))
+            embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+            embed.set_footer(text="Fox 2020 | demafurry#4811")
+            await ctx.channel.send(embed=embed)
+
+### Выше только nsfw!!! Меня заставили(Нет, просто мне надо теги накручивать)
+
 @commands.cooldown(1, 10, commands.BucketType.user)
 @bot.command(pass_context=True)
-async def help(ctx):
-    embed = discord.Embed(color=0xffa500, title="Commands list:", description="Реакция Дать пощёчину:\n"
-        "```>>slap {user}```Реакция Ударить:\n"
-        "```>>punch {user}```Реакция Обнять:\n"
-        "```>>hug {user}```Реакция Погладить:\n"
-        "```>>pet {user}```Реакция Поцеловать:\n"
-        "```>>kiss {user}```Реакция Лизнуть:\n"
-        "```>>lick {user}```Показать пинг бота:\n"
-        "```>>ping```Показать ссылку для приглашения бота:\n"
-        "```>>invitebot```Показать доступные команды:\n"
-        "```>>help```Рандомная фотография лисы:\n"
-        "```>>randomfox```Рандомная фотография собаки:\n"
-        "```>>randomdog```Рандомная фотография кота:\n"
-        "```>>randomcat```Зашиперить:\n"
-        "```>>shipp {user1} {user2}```Информация о участнике:\n"
-        "```>>user {user}```Информация о сервере:\n"
-        "```>>server```Аватар участника:\n"
-        "```>>avatar {user}```Сказать что-либо от имени бота(Только для роли `FoxAdminAccess`):\n"
-        "```>>say {text( ! - В начале, чтобы выделить анимацией ➟➠ )}```Информация о боте:\n"
-        "```>>botinfo```Включить музыку(YouTube, nsfw контент игнорируется, может не сработать с 1 раза):\n"
-        "```>>mplay {url | search}```Выключить музыку:\n"
-        "```>>mstop```Выгнать бота из голосового чата:\n"
-        "```>>mleave```Рандомный мем с Reddit:\n"
-        "```>>meme {theme}```Рандомная аниме-тян - лисичка ^^:\n"
-        "```>>foxgrl```")
-    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-    embed.set_footer(text="Fox 2020 | demafurry#4811")
-    await ctx.send(embed=embed)
-    embed = discord.Embed(color = 0xffa500, title="FoxBot", description="Здравствуйте, приносим свои извинения за неполадки в работе бота. Мы не ожидали что наш бот будет стоять на большом кол-ве серверов, из-за чего идёт очень большая нагрузка. Мы вынуждены ограничить скорсть использования комманд до 10 секунд. Мы постараемся вскоре решить эту проблему. Приносим свои извинения. По всем вопросам - пишите разработчику: `demafurry#4811`")
-    await ctx.channel.send(embed=embed)
+async def help(ctx, arg="Default"):
+    if str(arg) == "Default" or str(arg) == "default":
+        embed = discord.Embed(color=0xffa500, title="Commands list:", description="Реакция Дать пощёчину:\n"
+            "```>>slap {user}```Реакция Ударить:\n"
+            "```>>punch {user}```Реакция Обнять:\n"
+            "```>>hug {user}```Реакция Погладить:\n"
+            "```>>pat {user}```Реакция Поцеловать:\n"
+            "```>>kiss {user}```Реакция Лизнуть:\n"
+            "```>>lick {user}```Показать пинг бота:\n"
+            "```>>ping```Показать ссылку для приглашения бота:\n"
+            "```>>invitebot```Показать доступные команды:\n"
+            "```>>help```Показать доступные nsfw комманды:\n"
+            "```>>help nsfw```Рандомная фотография лисы:\n"
+            "```>>randomfox```Рандомная фотография собаки:\n"
+            "```>>randomdog```Рандомная фотография кота:\n"
+            "```>>randomcat```Зашиперить:\n"
+            "```>>shipp {user1} {user2}```Информация о участнике:\n"
+            "```>>user {user}```Информация о сервере:\n"
+            "```>>server```Аватар участника:\n"
+            "```>>avatar {user}```Сказать что-либо от имени бота(Только для роли `FoxAdminAccess`):\n"
+            "```>>say {text( ! - В начале, чтобы выделить анимацией ➟➠ )}```Информация о боте:\n"
+            "```>>botinfo```Включить музыку(YouTube, nsfw контент игнорируется, может не сработать с 1 раза):\n"
+            "```>>mplay {url | search}```Выключить музыку:\n"
+            "```>>mstop```Выгнать бота из голосового чата:\n"
+            "```>>mleave```Рандомный мем с Reddit:\n"
+            "```>>meme {theme}```Рандомная аниме-тян - лисичка ^^:\n"
+            "```>>foxgrl```")
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        await ctx.send(embed=embed)
+        embed = discord.Embed(color = 0xffa500, title="FoxBot", description="Здравствуйте, приносим свои извинения за неполадки в работе бота. Мы не ожидали что наш бот будет стоять на большом кол-ве серверов, из-за чего идёт очень большая нагрузка. Мы вынуждены ограничить скорсть использования комманд до 10 секунд. Мы постараемся вскоре решить эту проблему. Приносим свои извинения. По всем вопросам - пишите разработчику: `demafurry#4811`")
+        await ctx.channel.send(embed=embed)
+    elif str(arg) == "NSFW" or str(arg) == "nsfw" or str(arg) == "Nsfw":
+        embed = discord.Embed(color=0xffa500, title="NSFW commands list:", description="Йифф:\n"
+            "```>>yiff {bulge | gay | lesbian | straight}```Анал:\n"
+            "```>>anal```Хентай:\n"
+            "```>>hentai```Юри:\n"
+            "```>>yuri```Эро:\n"
+            "```>>ero```Эро-юри:\n"
+            "```>>eroyuri```")
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.set_footer(text="Fox 2020 | demafurry#4811")
+        await ctx.send(embed=embed)
+        embed = discord.Embed(color = 0xffa500, title="FoxBot", description="Здравствуйте, приносим свои извинения за неполадки в работе бота. Мы не ожидали что наш бот будет стоять на большом кол-ве серверов, из-за чего идёт очень большая нагрузка. Мы вынуждены ограничить скорсть использования комманд до 10 секунд. Мы постараемся вскоре решить эту проблему. Приносим свои извинения. По всем вопросам - пишите разработчику: `demafurry#4811`")
+        await ctx.channel.send(embed=embed)
 
 bot.run(config.TOKEN)
